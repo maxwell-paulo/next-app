@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <body className={`${GeistSans.variable}`}>
+      <body className={`${GeistSans.variable} dark`}>
         <Topnav />
         {children}
         {modal}

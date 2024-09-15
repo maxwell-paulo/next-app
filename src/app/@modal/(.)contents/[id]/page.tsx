@@ -1,7 +1,8 @@
-import { getContent } from "~/server/queries"
+import { Modal } from "./modal"
+import FullPageContentView from "~/app/common/full-page-content-view"
 
 
-export default async function ContentModal({
+export default function ContentModal({
     params: { id: contentId },
 }: {
     params: { id: string }
@@ -9,13 +10,9 @@ export default async function ContentModal({
     const idAsNumber = Number(contentId)
     if (Number.isNaN(idAsNumber)) throw new Error("Invalid content id")
 
-    const content = await getContent(idAsNumber)
-
     return (
-        <div>
-            <div>{content.id}</div>
-            <div>{content.name}</div>
-            <div>{content.text}</div>
-        </div>
+        <Modal>
+            <FullPageContentView id={idAsNumber} />
+        </Modal>
     )
 }

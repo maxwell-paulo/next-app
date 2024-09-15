@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Topnav } from "./_components/topnav";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({
         {children}
         {modal}
         <div id="modal-root" />
+        <Toaster />
       </body>
     </html>
   );

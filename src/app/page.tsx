@@ -1,9 +1,9 @@
-import { db } from "~/server/db";
+import { getContents } from "~/server/queries";
 
 export const dynamic = "force-dynamic"
 
 async function Contents() {
-  const contents = await db.query.contents.findMany()
+  const contents = await getContents()
 
   return (
     <div className="flex flex-wrap gap-4">

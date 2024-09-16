@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
 
             const newProject = await db.insert(projects).values({ name });
 
-            return NextResponse.json(newProject, { status: 201 });
+            return NextResponse.json({ message: "Project created successfully!" }, { status: 201 });
         } catch (error) {
-            console.error('Error creating project:', error); // Para depuração
+            console.error('Error creating project:', error);
             return NextResponse.json({ error: 'Failed to create project' }, { status: 500 });
         }
     } else {

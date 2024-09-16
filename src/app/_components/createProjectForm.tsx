@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createProject } from "~/lib/services/projectService";
 
 export function CreateProjectForm({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) {
     const [projectName, setProjectName] = useState('');
@@ -8,23 +9,10 @@ export function CreateProjectForm({ onSuccess, onError }: { onSuccess: () => voi
         e.preventDefault();
         setIsSubmitting(true);
 
-        console.log(JSON.stringify({ name: projectName }))
-
         try {
-            const res = await fetch('/api/projects', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: projectName }),
-            });
-
-            if (res.ok) {
-                onSuccess();
-                setProjectName('');
-            } else {
-                onError();
-            }
+            await createProject(projectName);
+            onSuccess();
+            setProjectName('');
         } catch (err) {
             onError();
         } finally {

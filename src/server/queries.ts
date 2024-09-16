@@ -1,6 +1,6 @@
 import "server-only"
 import { db } from "./db"
-import { contents } from "./db/schema"
+import { contents, projects } from "./db/schema"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
 
@@ -21,9 +21,19 @@ export async function getContent(id: number) {
 }
 
 export async function deleteContent(id: number) {
-    // Deleta o conteúdo onde o ID é igual ao passado na função
     await db.delete(contents).where(eq(contents.id, id));
 
-    // Redireciona para a página inicial após a exclusão
     redirect("/");
+}
+
+export async function createProject(name: string) {
+    if (!name || name.trim() === "") {
+        throw new Error("Project name is required");
+    }
+
+    await db.insert(projects).values({
+        name,
+        createdAt: new Date(),
+    });
+
 }

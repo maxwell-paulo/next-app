@@ -1,3 +1,5 @@
+import { env } from "~/env";
+
 interface GetProjects {
     id: number;
     name: string;
@@ -7,12 +9,7 @@ interface GetProjects {
 
 export async function listProjects(): Promise<GetProjects[]> {
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-        if (!apiUrl) {
-            throw new Error('API URL is not defined');
-        }
-
-        const res = await fetch(`${apiUrl}/api/projects`, {
+        const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/projects`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

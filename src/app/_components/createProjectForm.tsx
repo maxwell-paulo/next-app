@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { Button } from "~/components/ui/button"; // ajuste o caminho conforme necessário
 import { createProject } from "~/lib/services/projectService";
 
-export function CreateProjectForm({ onSuccess, onError }: { onSuccess: () => void; onError: () => void }) {
+export function CreateProjectForm({ onSuccess, onError, onCancel }: { onSuccess: () => void; onError: () => void; onCancel: () => void; }) {
     const [projectName, setProjectName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -22,25 +23,38 @@ export function CreateProjectForm({ onSuccess, onError }: { onSuccess: () => voi
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <label htmlFor="projectName" className="block text-sm font-medium text-gray-700">
-                Project Name
-            </label>
-            <input
-                type="text"
-                id="projectName"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-
-            <button
-                type="submit"
-                disabled={isSubmitting}
-                className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-            >
-                {isSubmitting ? 'Creating...' : 'Create Project'}
-            </button>
+            <div>
+                <label
+                    htmlFor="projectName"
+                    className="block text-sm font-semibold text-gray-800"
+                >
+                    Project Name
+                </label>
+                <input
+                    type="text"
+                    id="projectName"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                    required
+                    className="mt-1 block w-full border-2 border-gray-400 rounded-lg px-4 py-2 text-black focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                />
+            </div>
+            <div className="flex gap-4">
+                <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
+                >
+                    {isSubmitting ? 'Creating...' : 'Create Project'}
+                </Button>
+                <Button
+                    onClick={onCancel}
+                    disabled={isSubmitting}
+                    className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
+                >
+                    Close
+                </Button>
+            </div>
         </form>
     );
 }

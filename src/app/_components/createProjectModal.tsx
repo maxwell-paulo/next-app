@@ -14,8 +14,8 @@ export function CreateProjectModal({ isOpen, closeModal }: CreateProjectModalPro
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-1/3">
-                <h2 className="text-xl font-bold mb-4">Add New Project</h2>
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-1/3 xl:max-w-1/3 ">
+                <h2 className="text-xl font-bold mb-4 text-gray-800 text-center">Add New Project</h2>
 
                 <CreateProjectForm
                     onSuccess={() => {
@@ -26,14 +26,8 @@ export function CreateProjectModal({ isOpen, closeModal }: CreateProjectModalPro
                     onError={() => {
                         toast.error("Failed to create project.");
                     }}
+                    onCancel={closeModal}
                 />
-
-                <button
-                    onClick={closeModal}
-                    className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
-                >
-                    Close
-                </button>
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { listProjects } from "../services/projectsService";
 import { useState, useEffect } from "react";
 import { listContents } from "../services/contentsService";
+import { EyeIcon } from '@heroicons/react/24/solid'
 
 type GetProjects = {
     id: number;
@@ -12,7 +13,7 @@ type GetProjects = {
 
 type GetContents = {
     id: number;
-    title: string;
+    name: string;
     projectId: number;
 };
 
@@ -58,45 +59,63 @@ export function ProjectContents() {
     };
 
     return (
-        <div className="flex flex-col items-center gap-4">
-            <label htmlFor="project-select" className="text-lg font-semibold mb-2">
-                Select a Project
-            </label>
-            <select
-                id="project-select"
-                value={selectedProject}
-                onChange={handleChange}
-                className="p-2 border rounded text-black w-64"
-            >
-                <option value="" disabled>Select a project</option>
-                {projects.map((project) => (
-                    <option
-                        key={project.id}
-                        value={project.id.toString()}
-                        className="text-black border"
-                    >
-                        {project.name}
-                    </option>
-                ))}
-            </select>
+        <div className="flex flex-col items-center gap-6">
+            <div className="mt-4 w-full flex flex-col justify-center items-center">
+                <label htmlFor="project-select" className="text-lg font-semibold mb-2">
+                    Select a Project
+                </label>
+                <select
+                    id="project-select"
+                    value={selectedProject}
+                    onChange={handleChange}
+                    className="p-2 border rounded text-black w-64"
+                >
+                    <option value="" disabled>Select a project</option>
+                    {projects.map((project) => (
+                        <option
+                            key={project.id}
+                            value={project.id.toString()}
+                            className="text-black border"
+                        >
+                            {project.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
 
-            <div className="mt-4 w-full">
-                {loading ? (
-                    <p>Loading contents...</p>
-                ) : (
-                    contents.length === 0 ? (
+            <div className="mt-4 w-full flex justify-center">
+                <div className="w-96">
+                    <h2 className="text-xl font-bold mb-4 text-center">Contents</h2>
+
+                    {loading ? (
+                        <p>Loading contents...</p>
+                    ) : contents.length === 0 ? (
                         <p>No contents available.</p>
                     ) : (
-                        <ul className="list-disc">
-                            {contents.map((content) => (
-                                <li key={content.id} className="p-2 border-b">
-                                    <h3 className="font-semibold">{content.title}</h3>
-                                    <p>{content.id}</p>
-                                </li>
-                            ))}
-                        </ul>
-                    )
-                )}
+                        <table className="table-auto w-full border-collapse border border-gray-300">
+                            <thead>
+                                <tr>
+                                    <th className="border px-2 py-2 w-1/6 text-center">ID</th>
+                                    <th className="border px-2 py-2 w-4/6 text-center">Content Name</th>
+                                    <th className="border px-2 py-2 w-1/6 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {contents.map((content) => (
+                                    <tr key={content.id}>
+                                        <td className="border px-2 py-2 text-center">{content.id}</td>
+                                        <td className="border px-2 py-2">{content.name}</td>
+                                        <td className="border px-2 py-2 text-center">
+                                            <Link href={`/contents/${content.id}`}>
+                                                <EyeIcon className="h-6 w-6 text-white cursor-pointer mx-auto" />
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             </div>
         </div>
     );

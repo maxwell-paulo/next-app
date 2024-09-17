@@ -2,7 +2,7 @@ import { env } from "~/env";
 
 interface GetContents {
     id: number;
-    title: string;
+    name: string;
 }
 
 export async function listContents(projectId?: number): Promise<GetContents[]> {

@@ -56,6 +56,7 @@ export const dynamicFields = createTable(
     contentId: integer("content_id").references(() => contents.id, { onDelete: "cascade" }).notNull(),
     key: varchar("key", { length: 256 }).notNull(),
     value: varchar("value", { length: 1000 }).notNull(),
+    fieldType: varchar("field_type", { length: 10 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -64,3 +65,4 @@ export const dynamicFields = createTable(
     contentIdIndex: index("content_id_idx").on(dynamicFields.contentId),
   })
 );
+

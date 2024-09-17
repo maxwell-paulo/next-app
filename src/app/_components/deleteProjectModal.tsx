@@ -26,7 +26,7 @@ export function DeleteProjectModal({ isOpen, closeModal }: CreateProjectModalPro
         }
     }, [isOpen]);
 
-    const fetchProjects = async () => {
+    async function fetchProjects() {
         try {
             const projectsData: GetProjects[] = await listProjects();
             setProjects(projectsData);
@@ -36,18 +36,18 @@ export function DeleteProjectModal({ isOpen, closeModal }: CreateProjectModalPro
         }
     };
 
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedProject(event.target.value);
     };
 
-    const handleDelete = async (e: React.FormEvent) => {
+    async function handleDelete(e: React.FormEvent) {
         e.preventDefault();
         setIsDeleting(true);
 
         try {
             await deleteProject(Number(selectedProject));
             toast.success("Project deleted successfully!");
-            await fetchProjects(); // Re-fetch the projects to update the list
+            await fetchProjects();
         } catch (err) {
             console.error("Failed to delete project:", err);
             toast.error("Failed to delete project.");

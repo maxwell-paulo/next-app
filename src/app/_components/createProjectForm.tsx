@@ -6,7 +6,7 @@ export function CreateProjectForm({ onSuccess, onError, onCancel }: { onSuccess:
     const [projectName, setProjectName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setIsSubmitting(true);
 

@@ -73,7 +73,7 @@ export function ProjectContents() {
         fetchContents().catch(console.error);
     }, [selectedProject]);
 
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
         setSelectedProject(event.target.value);
     };
 

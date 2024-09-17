@@ -32,6 +32,8 @@ export async function deleteProject(id: number) {
     });
 
     if (!res.ok) {
+        console.log(res);
+
         throw new Error('Failed to delete project');
     }
 

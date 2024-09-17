@@ -36,7 +36,7 @@ export const contents = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
     text: varchar("text", { length: 1000 }).notNull(),
-    projectId: integer("project_id").references(() => projects.id).notNull(),
+    projectId: integer("project_id").references(() => projects.id, { onDelete: "cascade" }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -53,7 +53,7 @@ export const dynamicFields = createTable(
   "dynamic_fields",
   {
     id: serial("id").primaryKey(),
-    contentId: integer("content_id").references(() => contents.id).notNull(),
+    contentId: integer("content_id").references(() => contents.id, { onDelete: "cascade" }).notNull(),
     key: varchar("key", { length: 256 }).notNull(),
     value: varchar("value", { length: 1000 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })

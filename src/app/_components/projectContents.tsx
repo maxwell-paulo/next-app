@@ -33,16 +33,17 @@ export function ProjectContents() {
     const openNewProjecModal = () => setIsNewProjectModalOpen(true);
     const closeNewProjecModal = () => {
         setIsNewProjectModalOpen(false);
-        fetchProjects().catch(console.error); // Buscar os projetos novamente ao fechar o modal
+        fetchProjects().catch(console.error);
     };
 
     const openDeleteProjecModal = () => setIsDeleteProjectModalOpen(true);
     const closeDeleteProjecModal = () => {
         setIsDeleteProjectModalOpen(false);
-        fetchProjects().catch(console.error); // Buscar os projetos novamente ao fechar o modal
+        fetchProjects().catch(console.error);
+        fetchContents().catch(console.error);
     };
 
-    const fetchProjects = async () => {
+    async function fetchProjects() {
         try {
             const projectsData: GetProjects[] = await listProjects();
             setProjects(projectsData);
@@ -51,23 +52,24 @@ export function ProjectContents() {
         }
     };
 
+    async function fetchContents() {
+        setLoading(true);
+        try {
+            const contentsData = await listContents(selectedProject ? Number(selectedProject) : undefined);
+            setContents(contentsData as GetContents[]);
+        } catch (error) {
+            console.error("Failed to fetch contents:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchProjects().catch(console.error);
+        fetchContents().catch(console.error);
     }, []);
 
     useEffect(() => {
-        async function fetchContents() {
-            setLoading(true);
-            try {
-                const contentsData = await listContents(selectedProject ? Number(selectedProject) : undefined);
-                setContents(contentsData as GetContents[]);
-            } catch (error) {
-                console.error("Failed to fetch contents:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
         fetchContents().catch(console.error);
     }, [selectedProject]);
 
@@ -77,7 +79,6 @@ export function ProjectContents() {
 
     return (
         <div className="flex flex-col items-center gap-6">
-            {/* Div dos botões alinhada à direita */}
             <div className="flex justify-between w-full">
                 <div className="ml-auto flex gap-6 mt-3 mr-3">
                     <Button
@@ -94,8 +95,6 @@ export function ProjectContents() {
                     </Button>
                 </div>
             </div>
-
-            {/* Seleção de projeto centralizada */}
             <div className="mt-4 w-full flex flex-col justify-center items-center">
                 <label htmlFor="project-select" className="text-lg font-semibold mb-2">
                     Select a Project
@@ -118,8 +117,6 @@ export function ProjectContents() {
                     ))}
                 </select>
             </div>
-
-            {/* Tabela de conteúdos */}
             <div className="mt-4 w-full flex justify-center">
                 <div className="w-96">
                     <h2 className="text-xl font-bold mb-4 text-center">Contents</h2>

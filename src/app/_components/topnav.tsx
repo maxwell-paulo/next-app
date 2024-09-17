@@ -4,13 +4,17 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import { CreateProjectModal } from "./createProjectModal";
+import { DeleteProjectModal } from "./deleteProjectModal";
 
 export function Topnav() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
+    const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] = useState(false);
     const router = useRouter();
 
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const openNewProjecModal = () => setIsNewProjectModalOpen(true);
+    const closeNewProjecModal = () => setIsNewProjectModalOpen(false);
+    const openDeleteProjecModal = () => setIsDeleteProjectModalOpen(true);
+    const closeDeleteProjecModal = () => setIsDeleteProjectModalOpen(false);
 
     const handleHomeClick = () => {
         router.push('/');
@@ -25,16 +29,24 @@ export function Topnav() {
                 Home Page
             </Button>
 
+            <div className="flex gap-6">
+                <Button
+                    onClick={openNewProjecModal}
+                    className="bg-blue-500 text-white border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors duration-300"
+                >
+                    Add New Project
+                </Button>
+                <Button
+                    onClick={openDeleteProjecModal}
+                    className="bg-red-500 text-white border-2 border-red-500 hover:bg-red-600 hover:border-red-600 transition-colors duration-300"
+                >
+                    Delete Project
+                </Button>
+            </div>
 
-            <Button
-                onClick={openModal}
-                className="bg-blue-500 text-white border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors duration-300"
-            >
-                Add New Project
-            </Button>
 
-
-            <CreateProjectModal isOpen={isModalOpen} closeModal={closeModal} />
+            <CreateProjectModal isOpen={isNewProjectModalOpen} closeModal={closeNewProjecModal} />
+            <DeleteProjectModal isOpen={isDeleteProjectModalOpen} closeModal={closeDeleteProjecModal} />
         </nav>
     );
 }

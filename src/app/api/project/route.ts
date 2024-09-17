@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { db } from '~/server/db';
 import { projects } from '~/server/db/schema';
+import { eq } from 'drizzle-orm';
 
 interface CreateProjectBody {
     name: string;
@@ -32,3 +33,27 @@ export async function GET() {
         return NextResponse.json({ error: 'Failed to retrieve projects' }, { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const idStr = req.nextUrl.searchParams.get('id');
+
+        if (!idStr) {
+            return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
+        }
+
+        const id = Number(idStr);
+
+        if (isNaN(id)) {
+            return NextResponse.json({ error: 'Invalid Project ID' }, { status: 400 });
+        }
+
+        await db.delete(projects).where(eq(projects.id, id));
+
+        return NextResponse.json({ message: "Project deleted successfully!" }, { status: 200 });
+    } catch (error) {
+        console.error("Failed to delete project:", error);
+        return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
+    }
+}
+

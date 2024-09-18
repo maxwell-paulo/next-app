@@ -13,7 +13,10 @@ interface DynamicField {
     fieldType: "text" | "checkbox";
 }
 
-// Função para obter o conteúdo
+interface DeleteContentResponse {
+    message: string;
+}
+
 export async function getContent(id: number): Promise<{ content: Content; dynamicFields: DynamicField[] }> {
     try {
         const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/content/${id}`, {
@@ -55,4 +58,20 @@ export async function updateContent(contentId: number, updatedContent: Partial<C
         console.error('Error updating content:', error);
         throw error;
     }
+}
+
+export async function deleteContent(id: number) {
+    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/content/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!res.ok) {
+        console.log(res);
+        throw new Error('Failed to delete content');
+    }
+
+    return await res.json() as DeleteContentResponse;
 }

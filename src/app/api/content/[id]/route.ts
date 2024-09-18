@@ -87,3 +87,23 @@ export async function PATCH(request: NextRequest) {
         return NextResponse.json({ error: 'Failed to update contents' }, { status: 500 });
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    try {
+        const { pathname } = new URL(req.url);
+        const idStr = pathname.split('/').pop();
+
+        if (!idStr || isNaN(Number(idStr))) {
+            return NextResponse.json({ error: 'Invalid Project ID' }, { status: 400 });
+        }
+
+        const id = Number(idStr);
+
+        await db.delete(contents).where(eq(contents.id, id));
+
+        return NextResponse.json({ message: "Content deleted successfully!" }, { status: 200 });
+    } catch (error) {
+        console.error("Failed to delete content:", error);
+        return NextResponse.json({ error: 'Failed to delete content' }, { status: 500 });
+    }
+}

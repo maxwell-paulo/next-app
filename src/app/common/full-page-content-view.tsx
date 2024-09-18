@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { getContent, updateContent } from "../services/contentService";
+import { useParams, useRouter } from "next/navigation";
+import { deleteContent, getContent, updateContent } from "../services/contentService";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
 
@@ -26,8 +26,10 @@ interface Content {
 }
 
 export default function FullPageContentView() {
+    const router = useRouter();
     const [content, setContent] = useState<Content | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const params = useParams();
     const id = params.id ? Number(params.id) : null;
 
@@ -67,6 +69,23 @@ export default function FullPageContentView() {
             }
         }
     }
+
+    async function handleDelete(e: React.FormEvent) {
+        e.preventDefault();
+        setIsDeleting(true);
+
+        try {
+            await deleteContent(id);
+            toast.success("Content deleted successfully!");
+            router.back()
+
+        } catch (err) {
+            console.error("Failed to delete content:", err);
+            toast.error("Failed to delete content.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     useEffect(() => {
         if (id) {
@@ -165,15 +184,18 @@ export default function FullPageContentView() {
                     <div className="flex gap-4 mt-6 justify-center">
                         <Button
                             onClick={handleUpdate}
+                            disabled={isDeleting || isUpdating}
                             type="button"
                             className="w-60 border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
                         >
                             {isUpdating ? "Updating..." : "Update"}
                         </Button>
                         <Button
+                            onClick={handleDelete}
+                            disabled={isDeleting || isUpdating}
                             className="w-60 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
                         >
-                            Close
+                            {isDeleting ? 'Deleting...' : 'Delete Project'}
                         </Button>
                     </div>
                 </div>

@@ -92,7 +92,7 @@ export default function FullPageContentView() {
         try {
             await deleteContent(id);
             toast.success("Content deleted successfully!");
-            router.back()
+            router.push("/")
 
         } catch (err) {
             console.error("Failed to delete content:", err);

@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
     try {
 
-        const { content, dynamicFields }: RequestPayload = await request.json();
+        const { content, dynamicFields }: RequestPayload = await request.json() as unknown as RequestPayload
 
         if (!content?.id) {
             return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });

@@ -17,20 +17,24 @@ interface DynamicField {
 }
 
 interface Content {
-    content: {
-        id: number;
-        name: string;
-        text: string;
-        projectId: number;
-        createdAt: string;
-        updatedAt: string | null;
-    };
+    id: number;
+    name: string;
+    text: string;
+    projectId: number;
+    createdAt: string;
+    updatedAt: string | null;
+}
+
+interface FullContent {
+    content: Content;
     dynamicFields: DynamicField[];
 }
 
+
+
 export default function FullPageContentView() {
     const router = useRouter();
-    const [content, setContent] = useState<Content | null>(null);
+    const [content, setContent] = useState<FullContent | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,12 +49,13 @@ export default function FullPageContentView() {
 
     async function fetchContent(id: number) {
         try {
-            const contentData = await getContent(id);
+            const contentData: FullContent = await getContent(id);
             setContent(contentData);
         } catch (error) {
             console.error("Failed to fetch content:", error);
         }
     }
+
 
     async function handleUpdate() {
         if (content) {
@@ -65,7 +70,7 @@ export default function FullPageContentView() {
                 const updatedDynamicFields = content.dynamicFields.map(field => ({
                     ...field,
                     id: field.id,
-                    value: field.fieldType === 'checkbox' ? (field.value === 'true') : field.value,
+                    value: field.fieldType,
                 }));
 
                 await updateContent(content.content.id, updatedContent, updatedDynamicFields);

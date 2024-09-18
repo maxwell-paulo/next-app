@@ -15,6 +15,8 @@ export function CreateProjectForm({ onSuccess, onError, onCancel }: { onSuccess:
             onSuccess();
             setProjectName('');
         } catch (err) {
+            console.log(err);
+
             onError();
         } finally {
             setIsSubmitting(false);

@@ -1,5 +1,4 @@
 import { Button } from "~/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { listProjects } from "../services/projectsService";
 import { deleteProject } from "../services/projectService";

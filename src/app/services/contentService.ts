@@ -4,6 +4,9 @@ interface Content {
     id: number;
     name: string;
     text: string;
+    projectId: number;
+    createdAt: string;
+    updatedAt: string | null;
 }
 
 interface DynamicField {

@@ -6,7 +6,7 @@ export default function ContentModal() {
 
     return (
         <Modal>
-            <FullPageContentView />
+            <FullPageContentView isModal={true} />
         </Modal>
     )
 }

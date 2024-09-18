@@ -9,8 +9,10 @@ import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { CreateDynamicFieldModal } from "../_components/createDynamicFieldModal";
 import { deleteDynamicField } from "../services/dynamicFields";
 import { type FullContent } from "./types/contentTypes";
+import { listProjects } from "../services/projectsService";
+import { listContents } from "../services/contentsService";
 
-export default function FullPageContentView() {
+export default function FullPageContentView({ isModal }: { isModal: boolean }) {
     const router = useRouter();
     const [content, setContent] = useState<FullContent | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -31,6 +33,22 @@ export default function FullPageContentView() {
             setContent(contentData);
         } catch (error) {
             console.error("Failed to fetch content:", error);
+        }
+    }
+
+    async function fetchProjects() {
+        try {
+            await listProjects();
+        } catch (error) {
+            console.error("Failed to fetch projects:", error);
+        }
+    };
+
+    async function fetchContents() {
+        try {
+            await listContents();
+        } catch (error) {
+            console.error("Failed to fetch contents:", error);
         }
     }
 
@@ -70,7 +88,13 @@ export default function FullPageContentView() {
         try {
             await deleteContent(id);
             toast.success("Content deleted successfully!");
-            router.push("/")
+            if (isModal) {
+                fetchContents()
+                fetchProjects()
+                router.back();
+            } else {
+                router.push("/")
+            }
 
         } catch (err) {
             console.error("Failed to delete content:", err);

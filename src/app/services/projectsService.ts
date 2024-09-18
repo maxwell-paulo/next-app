@@ -1,11 +1,7 @@
 import { env } from "~/env";
+import { type GetProjects } from "../common/types/projectTypes";
 
-interface GetProjects {
-    id: number;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-}
+
 
 export async function listProjects(): Promise<GetProjects[]> {
     try {

@@ -8,29 +8,7 @@ import { toast } from "sonner";
 import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { CreateDynamicFieldModal } from "../_components/createDynamicFieldModal";
 import { deleteDynamicField } from "../services/dynamicFields";
-
-interface DynamicField {
-    id: number;
-    key: string;
-    value: string;
-    fieldType: "text" | "checkbox";
-}
-
-interface Content {
-    id: number;
-    name: string;
-    text: string;
-    projectId: number;
-    createdAt: string;
-    updatedAt: string | null;
-}
-
-interface FullContent {
-    content: Content;
-    dynamicFields: DynamicField[];
-}
-
-
+import { type FullContent } from "./types/contentTypes";
 
 export default function FullPageContentView() {
     const router = useRouter();

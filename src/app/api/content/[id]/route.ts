@@ -1,25 +1,11 @@
 import { eq } from 'drizzle-orm';
 import { NextResponse, type NextRequest } from 'next/server';
+import { type PatchContentRequestPayload } from '~/app/common/types/contentTypes';
 import { db } from '~/server/db';
 import { contents, dynamicFields as dynamicFieldSchema } from '~/server/db/schema';
 
-interface Content {
-    id: number;
-    name?: string;
-    text?: string;
-}
 
-interface DynamicField {
-    id: number;
-    key?: string;
-    value?: string;
-    fieldType?: "text" | "checkbox";
-}
 
-interface RequestPayload {
-    content?: Content;
-    dynamicFields?: DynamicField[];
-}
 
 export async function GET(request: NextRequest) {
     try {
@@ -55,7 +41,7 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
     try {
 
-        const { content, dynamicFields }: RequestPayload = await request.json() as unknown as RequestPayload
+        const { content, dynamicFields }: PatchContentRequestPayload = await request.json() as unknown as PatchContentRequestPayload
 
         if (!content?.id) {
             return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });

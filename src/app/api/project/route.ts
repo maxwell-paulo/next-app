@@ -2,10 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { db } from '~/server/db';
 import { projects } from '~/server/db/schema';
 import { eq } from 'drizzle-orm';
-
-interface CreateProjectBody {
-    name: string;
-}
+import { type CreateProjectBody } from '~/app/common/types/projectTypes';
 
 export async function POST(req: NextRequest) {
     try {

@@ -9,26 +9,18 @@ import { Button } from "~/components/ui/button";
 import { CreateProjectModal } from "./createProjectModal";
 import { DeleteProjectModal } from "./deleteProjectModal";
 import { CreateContentModal } from "./createContentModal";
+import { type GetProjects } from "../common/types/projectTypes";
+import { type Content } from "../common/types/contentTypes";
 
 export const dynamic = "force-dynamic";
 
-type GetProjects = {
-    id: number;
-    name: string;
-};
-
-type GetContents = {
-    id: number;
-    name: string;
-    projectId: number;
-};
 
 export function ProjectContents() {
     const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
     const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] = useState(false);
     const [isNewContentModalOpen, setIsNewContentModalOpen] = useState(false);
     const [projects, setProjects] = useState<GetProjects[]>([]);
-    const [contents, setContents] = useState<GetContents[]>([]);
+    const [contents, setContents] = useState<Content[]>([]);
     const [selectedProject, setSelectedProject] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -64,7 +56,7 @@ export function ProjectContents() {
         setLoading(true);
         try {
             const contentsData = await listContents(selectedProject ? Number(selectedProject) : undefined);
-            setContents(contentsData as GetContents[]);
+            setContents(contentsData as Content[]);
         } catch (error) {
             console.error("Failed to fetch contents:", error);
         } finally {

@@ -2,12 +2,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { createDynamicField } from "../services/dynamicFields";
-
-interface CreateDynamicFieldFormProps {
-    onSuccess: () => void;
-    onError: () => void;
-    onCancel: () => void;
-}
+import { type CreateDynamicFieldFormProps } from "../common/types/dynamicFieldsTypes";
 
 export function CreateDynamicFieldForm({
     onSuccess,

@@ -1,12 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { type CreateContentBody } from '~/app/common/types/contentTypes';
 import { db } from '~/server/db';
 import { contents, } from '~/server/db/schema';
-
-interface CreateContentBody {
-    name: string;
-    text: string;
-    projectId: number;
-}
 
 export async function POST(req: NextRequest) {
     try {

@@ -1,18 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { NextResponse, type NextRequest } from 'next/server';
+import { type Id } from '~/app/common/types/commonTypes';
+import { type CreateDynamicFieldPayload } from '~/app/common/types/dynamicFieldsTypes';
 import { db } from '~/server/db';
 import { dynamicFields } from '~/server/db/schema';
-
-interface CreateDynamicFieldPayload {
-    key: string;
-    value: string;
-    fieldType: 'text' | 'checkbox';
-    contentId: number;
-}
-
-interface DeleteDynamicField {
-    id: number;
-}
 
 export async function POST(req: NextRequest) {
     try {
@@ -38,7 +29,7 @@ export async function POST(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
     try {
 
-        const { id } = await req.json() as DeleteDynamicField;
+        const { id } = await req.json() as Id;
 
         if (!id || isNaN(Number(id))) {
             return NextResponse.json({ error: 'Invalid Field ID' }, { status: 400 });

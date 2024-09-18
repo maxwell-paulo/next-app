@@ -1,13 +1,9 @@
 import { env } from "~/env";
+import { type Message } from "../common/types/commonTypes";
 
-interface PostProject {
-    message: string;
-}
-interface DeleteProjectResponse {
-    message: string;
-}
 
-export async function createProject(name: string): Promise<PostProject> {
+
+export async function createProject(name: string): Promise<Message> {
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/project`, {
         method: 'POST',
         headers: {
@@ -20,7 +16,7 @@ export async function createProject(name: string): Promise<PostProject> {
         throw new Error('Failed to create project');
     }
 
-    return await res.json() as PostProject;
+    return await res.json() as Message;
 }
 
 export async function deleteProject(id: number) {
@@ -37,6 +33,6 @@ export async function deleteProject(id: number) {
         throw new Error('Failed to delete project');
     }
 
-    return await res.json() as DeleteProjectResponse;
+    return await res.json() as Message;
 }
 

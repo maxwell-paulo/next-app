@@ -2,19 +2,11 @@ import { useState, useEffect } from "react";
 import { CreateContentForm } from "./createContentForm";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { listProjects } from "../services/projectsService"; // Importa o serviço de projetos
+import { listProjects } from "../services/projectsService";
+import { type GetProjects } from "../common/types/projectTypes";
+import { type CloseModalProps } from "../common/types/commonTypes";
 
-interface CreateProjectModalProps {
-    isOpen: boolean;
-    closeModal: () => void;
-}
-
-type GetProjects = {
-    id: number;
-    name: string;
-};
-
-export function CreateContentModal({ isOpen, closeModal }: CreateProjectModalProps) {
+export function CreateContentModal({ isOpen, closeModal }: CloseModalProps) {
     const [projects, setProjects] = useState<{ id: number; name: string }[]>([]);
     const [loading, setLoading] = useState(false);
     const router = useRouter();

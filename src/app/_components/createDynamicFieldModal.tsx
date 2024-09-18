@@ -1,13 +1,9 @@
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { CreateDynamicFieldForm } from "./createDynamicFieldForm";
+import { type CloseModalProps } from "../common/types/commonTypes";
 
-interface CreateDynamicFieldModalProps {
-    isOpen: boolean;
-    closeModal: () => void;
-}
-
-export function CreateDynamicFieldModal({ isOpen, closeModal }: CreateDynamicFieldModalProps) {
+export function CreateDynamicFieldModal({ isOpen, closeModal }: CloseModalProps) {
     const router = useRouter();
 
     if (!isOpen) return null;

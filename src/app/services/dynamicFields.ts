@@ -1,21 +1,9 @@
 import { env } from "~/env";
+import { type CreateDynamicFieldPayload } from "../common/types/dynamicFieldsTypes";
+import { type Message } from "postcss";
+import { type Id } from "../common/types/commonTypes";
 
-interface PostProject {
-    message: string;
-}
-
-interface CreateDynamicFieldPayload {
-    key: string;
-    value: string;
-    fieldType: 'text' | 'checkbox';
-    contentId: number;
-}
-
-interface DeleteDynamicField {
-    id: number;
-}
-
-export async function createDynamicField(payload: CreateDynamicFieldPayload): Promise<PostProject> {
+export async function createDynamicField(payload: CreateDynamicFieldPayload): Promise<Message> {
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/dynamicField`, {
         method: 'POST',
         headers: {
@@ -28,10 +16,10 @@ export async function createDynamicField(payload: CreateDynamicFieldPayload): Pr
         throw new Error('Failed to create field');
     }
 
-    return await res.json() as PostProject;
+    return await res.json() as Message;
 }
 
-export async function deleteDynamicField(id: number): Promise<DeleteDynamicField> {
+export async function deleteDynamicField(id: number): Promise<Id> {
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/dynamicField`, {
         method: 'DELETE',
         headers: {
@@ -45,5 +33,5 @@ export async function deleteDynamicField(id: number): Promise<DeleteDynamicField
         throw new Error('Failed to delete content');
     }
 
-    return await res.json() as DeleteDynamicField;
+    return await res.json() as Id;
 }

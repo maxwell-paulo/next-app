@@ -1,9 +1,5 @@
 import { env } from "~/env";
-
-interface GetContents {
-    id: number;
-    name: string;
-}
+import { type GetContents } from "../common/types/contentTypes";
 
 export async function listContents(projectId?: number): Promise<GetContents[]> {
     try {

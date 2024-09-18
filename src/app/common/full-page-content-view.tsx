@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { deleteContent, getContent, updateContent } from "../services/contentService";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import { CreateDynamicFieldModal } from "../_components/createDynamicFieldModal";
 
 interface DynamicField {
     id: number;
@@ -30,8 +32,15 @@ export default function FullPageContentView() {
     const [content, setContent] = useState<Content | null>(null);
     const [isUpdating, setIsUpdating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const params = useParams();
-    const id = params.id ? Number(params.id) : null;
+    const id = Number(params.id);
+
+    const openNewDynamicFieldModal = () => setIsModalOpen(true);
+    const closeNewDynamicFieldModal = () => {
+        setIsModalOpen(false);
+        fetchContent(id).catch(console.error);
+    };
 
     async function fetchContent(id: number) {
         try {
@@ -154,7 +163,10 @@ export default function FullPageContentView() {
                     <div>
                         {content.dynamicFields.length > 0 && (
                             <>
-                                <h2 className="text-xl font-bold mb-4">Extra Infos</h2>
+                                <div className="flex items-center gap-5 mb-4">
+                                    <h2 className="text-xl font-bold">Extra Infos</h2>
+                                    <PlusCircleIcon className="text-white w-8 cursor-pointer" onClick={openNewDynamicFieldModal} />
+                                </div>
                                 <ul className="space-y-4">
                                     {content.dynamicFields.map(field => (
                                         <li key={field.id} className="flex items-center space-x-4">
@@ -195,11 +207,13 @@ export default function FullPageContentView() {
                             disabled={isDeleting || isUpdating}
                             className="w-60 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
                         >
-                            {isDeleting ? 'Deleting...' : 'Delete Project'}
+                            {isDeleting ? 'Deleting...' : 'Delete Content'}
                         </Button>
                     </div>
                 </div>
             )}
+
+            <CreateDynamicFieldModal isOpen={isModalOpen} closeModal={closeNewDynamicFieldModal} />
         </div>
     );
 }

@@ -78,7 +78,9 @@ export function ProjectContents() {
     }, []);
 
     useEffect(() => {
-        fetchContents().catch(console.error);
+        if (selectedProject) {
+            fetchContents().catch(console.error);
+        }
     }, [selectedProject]);
 
     function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {

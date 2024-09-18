@@ -5,12 +5,13 @@ import { useParams, useRouter } from "next/navigation";
 import { deleteContent, getContent, updateContent } from "../services/contentService";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
-import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
-import { CreateDynamicFieldModal } from "../_components/createDynamicFieldModal";
-import { deleteDynamicField } from "../services/dynamicFields";
-import { type FullContent } from "./types/contentTypes";
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import { CreateDynamicFieldModal } from "./createDynamicFieldModal";
+import { type FullContent } from "../common/types/contentTypes";
 import { listProjects } from "../services/projectsService";
 import { listContents } from "../services/contentsService";
+import { ContentForm } from "./contentForm";
+import { DynamicFieldsForm } from "./dynamicFieldsForm";
 
 export default function FullPageContentView({ isModal }: { isModal: boolean }) {
     const router = useRouter();
@@ -51,7 +52,6 @@ export default function FullPageContentView({ isModal }: { isModal: boolean }) {
             console.error("Failed to fetch contents:", error);
         }
     }
-
 
     async function handleUpdate() {
         if (content) {
@@ -104,119 +104,29 @@ export default function FullPageContentView({ isModal }: { isModal: boolean }) {
         }
     };
 
-    async function handleDeleteDynamicField(e: React.FormEvent, fieldId: number) {
-        e.preventDefault();
-        setIsDeleting(true);
-
-        try {
-            await deleteDynamicField(fieldId);
-            toast.success("Field deleted successfully!");
-            fetchContent(id).catch(console.error)
-
-        } catch (err) {
-            console.error("Failed to delete field:", err);
-            toast.error("Failed to delete field.");
-        } finally {
-            setIsDeleting(false);
-        }
-    };
-
     useEffect(() => {
         if (id) {
             fetchContent(id).catch(console.error);
         }
     }, [id]);
 
-    function handleFieldChange(fieldId: number, newValue: string | boolean) {
-        if (content) {
-            setContent((prevContent) => {
-                if (!prevContent) {
-                    throw new Error('Previous content is null');
-                }
-
-                return {
-                    ...prevContent,
-                    dynamicFields: prevContent.dynamicFields.map(field =>
-                        field.id === fieldId
-                            ? { ...field, value: typeof newValue === 'boolean' ? (newValue ? 'true' : 'false') : newValue }
-                            : field
-                    )
-                };
-            });
-        }
-    }
-
-    function handleContentChange(key: "name" | "text", newValue: string) {
-        if (content) {
-            const updatedContent = {
-                ...content,
-                content: {
-                    ...content.content,
-                    [key]: newValue
-                },
-                dynamicFields: content.dynamicFields || []
-            };
-            setContent(updatedContent);
-        }
-    }
-
     return (
         <div className="flex flex-col items-center p-6 space-y-4">
             {content && (
                 <div className="max-w-4xl w-full">
-                    <div className="mb-6">
-                        <label htmlFor="name" className="block text-lg font-semibold mb-1">Name</label>
-                        <input
-                            id="name"
-                            type="text"
-                            value={content.content.name}
-                            onChange={(e) => handleContentChange('name', e.target.value)}
-                            className="border-2 border-gray-300 rounded-md p-2 text-black w-full"
-                            placeholder="Content Name"
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <label htmlFor="text" className="block text-lg font-semibold mb-1">Informations</label>
-                        <textarea
-                            id="text"
-                            value={content.content.text}
-                            onChange={(e) => handleContentChange('text', e.target.value)}
-                            className="border-2 border-gray-300 rounded-md p-2 text-black w-full"
-                            placeholder="Content Text"
-                        />
-                    </div>
+                    <ContentForm content={content} setContent={setContent} />
                     <div>
                         <div className="flex items-center gap-5 mb-4">
                             <h2 className="text-xl font-bold">Extra Infos</h2>
                             <PlusCircleIcon className="text-white w-8 cursor-pointer" onClick={openNewDynamicFieldModal} />
                         </div>
                         {content.dynamicFields.length > 0 ? (
-                            <>
-                                <ul className="space-y-4">
-                                    {content.dynamicFields.map(field => (
-                                        <li key={field.id} className="flex items-center space-x-4">
-                                            <strong className="w-32">{field.key}:</strong>
-                                            {field.fieldType === 'text' ? (
-                                                <textarea
-                                                    id="text"
-                                                    value={field.value}
-                                                    onChange={(e) => handleFieldChange(field.id, e.target.value)}
-                                                    className="border-2 border-gray-300 rounded-md p-2 text-black"
-                                                    placeholder={field.key}
-                                                />
-                                            ) : (
-                                                <input
-                                                    type="checkbox"
-                                                    checked={field.value === 'true'}
-                                                    onChange={(e) => { handleFieldChange(field.id, e.target.checked) }}
-                                                    className="form-checkbox h-5 w-5 text-blue-600"
-                                                />
-                                            )}
-                                            <TrashIcon className="text-white w-5 cursor-pointer" onClick={(e) => handleDeleteDynamicField(e, field.id)} />
-                                        </li>
-                                    ))}
-                                </ul>
-                            </>
+                            <DynamicFieldsForm
+                                content={content}
+                                setContent={setContent}
+                                setIsDeleting={setIsDeleting}
+                                id={id}
+                            />
                         ) : (
                             <strong className="w-32">No additional information added</strong>
                         )}

@@ -9,7 +9,7 @@ interface GetProjects {
 
 export async function listProjects(): Promise<GetProjects[]> {
     try {
-        const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/projects`, {
+        const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/project`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

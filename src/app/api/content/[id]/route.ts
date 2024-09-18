@@ -61,9 +61,6 @@ export async function PATCH(request: NextRequest) {
             return NextResponse.json({ error: 'Invalid ID' }, { status: 400 });
         }
 
-        console.log(content);
-
-
         if (content) {
             await db.update(contents).set({
                 name: content.name,

@@ -5,8 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import { deleteContent, getContent, updateContent } from "../services/contentService";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
-import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import { PlusCircleIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { CreateDynamicFieldModal } from "../_components/createDynamicFieldModal";
+import { deleteDynamicField } from "../services/dynamicFields";
 
 interface DynamicField {
     id: number;
@@ -91,6 +92,23 @@ export default function FullPageContentView() {
         } catch (err) {
             console.error("Failed to delete content:", err);
             toast.error("Failed to delete content.");
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    async function handleDeleteDynamicField(e: React.FormEvent, fieldId: number) {
+        e.preventDefault();
+        setIsDeleting(true);
+
+        try {
+            await deleteDynamicField(fieldId);
+            toast.success("Field deleted successfully!");
+            fetchContent(id).catch(console.error)
+
+        } catch (err) {
+            console.error("Failed to delete field:", err);
+            toast.error("Failed to delete field.");
         } finally {
             setIsDeleting(false);
         }
@@ -187,6 +205,7 @@ export default function FullPageContentView() {
                                                     className="form-checkbox h-5 w-5 text-blue-600"
                                                 />
                                             )}
+                                            <TrashIcon className="text-white w-5 cursor-pointer" onClick={(e) => handleDeleteDynamicField(e, field.id)} />
                                         </li>
                                     ))}
                                 </ul>

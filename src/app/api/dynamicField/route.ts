@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { NextResponse, type NextRequest } from 'next/server';
 import { db } from '~/server/db';
 import { dynamicFields } from '~/server/db/schema';
@@ -7,6 +8,10 @@ interface CreateDynamicFieldPayload {
     value: string;
     fieldType: 'text' | 'checkbox';
     contentId: number;
+}
+
+interface DeleteDynamicField {
+    id: number;
 }
 
 export async function POST(req: NextRequest) {
@@ -27,5 +32,23 @@ export async function POST(req: NextRequest) {
     } catch (error) {
         console.error('Error creating field:', error);
         return NextResponse.json({ error: 'Failed to create field' }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    try {
+
+        const { id } = await req.json() as DeleteDynamicField;
+
+        if (!id || isNaN(Number(id))) {
+            return NextResponse.json({ error: 'Invalid Field ID' }, { status: 400 });
+        }
+
+        await db.delete(dynamicFields).where(eq(dynamicFields.id, Number(id)));
+
+        return NextResponse.json({ message: "Field deleted successfully!" }, { status: 200 });
+    } catch (error) {
+        console.error("Failed to delete field:", error);
+        return NextResponse.json({ error: 'Failed to delete field' }, { status: 500 });
     }
 }

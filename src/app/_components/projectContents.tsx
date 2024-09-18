@@ -8,6 +8,7 @@ import { EyeIcon } from '@heroicons/react/24/solid';
 import { Button } from "~/components/ui/button";
 import { CreateProjectModal } from "./createProjectModal";
 import { DeleteProjectModal } from "./deleteProjectModal";
+import { CreateContentModal } from "./createContentModal";
 
 export const dynamic = "force-dynamic";
 
@@ -25,15 +26,22 @@ type GetContents = {
 export function ProjectContents() {
     const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
     const [isDeleteProjectModalOpen, setIsDeleteProjectModalOpen] = useState(false);
+    const [isNewContentModalOpen, setIsNewContentModalOpen] = useState(false);
     const [projects, setProjects] = useState<GetProjects[]>([]);
     const [contents, setContents] = useState<GetContents[]>([]);
     const [selectedProject, setSelectedProject] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
-    const openNewProjecModal = () => setIsNewProjectModalOpen(true);
-    const closeNewProjecModal = () => {
+    const openNewProjectModal = () => setIsNewProjectModalOpen(true);
+    const closeNewProjectModal = () => {
         setIsNewProjectModalOpen(false);
         fetchProjects().catch(console.error);
+    };
+
+    const openNewContentModal = () => setIsNewContentModalOpen(true);
+    const closeNewContentModal = () => {
+        setIsNewContentModalOpen(false);
+        fetchContents().catch(console.error);
     };
 
     const openDeleteProjecModal = () => setIsDeleteProjectModalOpen(true);
@@ -82,7 +90,7 @@ export function ProjectContents() {
             <div className="flex justify-between w-full">
                 <div className="ml-auto flex gap-6 mt-3 mr-3">
                     <Button
-                        onClick={openNewProjecModal}
+                        onClick={openNewProjectModal}
                         className="bg-blue-500 text-white border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors duration-300"
                     >
                         Add New Project
@@ -117,9 +125,17 @@ export function ProjectContents() {
                     ))}
                 </select>
             </div>
-            <div className="mt-4 w-full flex justify-center">
+            <div className="mt-4 w-full flex justify-center mb-8">
                 <div className="w-96">
-                    <h2 className="text-xl font-bold mb-4 text-center">Contents</h2>
+                    <div className="flex items-baseline justify-center gap-4 mb-6">
+                        <h2 className="text-xl font-bold mb-4 text-center">Contents</h2>
+                        <Button
+                            onClick={openNewContentModal}
+                            className="bg-blue-500 text-white border-2 border-blue-500 hover:bg-blue-600 hover:border-blue-600 transition-colors duration-300"
+                        >
+                            Add New Content
+                        </Button></div>
+
 
                     {loading ? (
                         <p>Loading contents...</p>
@@ -151,9 +167,10 @@ export function ProjectContents() {
                     )}
                 </div>
             </div>
-
-            <CreateProjectModal isOpen={isNewProjectModalOpen} closeModal={closeNewProjecModal} />
+            <CreateProjectModal isOpen={isNewProjectModalOpen} closeModal={closeNewProjectModal} />
             <DeleteProjectModal isOpen={isDeleteProjectModalOpen} closeModal={closeDeleteProjecModal} />
+
+            <CreateContentModal isOpen={isNewContentModalOpen} closeModal={closeNewContentModal} />
         </div>
     );
 }

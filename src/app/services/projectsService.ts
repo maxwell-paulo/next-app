@@ -13,8 +13,8 @@ export async function listProjects(): Promise<GetProjects[]> {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Cache-Control': 'no-store',
             },
-            cache: 'no-store'
         });
 
         if (!res.ok) {

@@ -24,15 +24,15 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// export async function GET() {
-//     try {
-//         const allProjects = await db.query.projects.findMany();
-//         return NextResponse.json(allProjects, { status: 200 });
-//     } catch (error) {
-//         console.error('Error retrieving projects:', error);
-//         return NextResponse.json({ error: 'Failed to retrieve projects' }, { status: 500 });
-//     }
-// }
+export async function GET() {
+    try {
+        const allProjects = await db.query.projects.findMany();
+        return NextResponse.json(allProjects, { status: 200 });
+    } catch (error) {
+        console.error('Error retrieving projects:', error);
+        return NextResponse.json({ error: 'Failed to retrieve projects' }, { status: 500 });
+    }
+}
 
 export async function DELETE(req: NextRequest) {
     try {

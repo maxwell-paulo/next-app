@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { getContent, } from "../services/contentService";
+import { getContent, updateContent } from "../services/contentService";
+import { Button } from "~/components/ui/button";
+import { toast } from "sonner";
+
 interface DynamicField {
     id: number;
     key: string;
@@ -24,6 +27,7 @@ interface Content {
 
 export default function FullPageContentView() {
     const [content, setContent] = useState<Content | null>(null);
+    const [isUpdating, setIsUpdating] = useState(false);
     const params = useParams();
     const id = params.id ? Number(params.id) : null;
 
@@ -36,16 +40,33 @@ export default function FullPageContentView() {
         }
     }
 
-    // async function handleUpdate() {
-    //     if (content) {
-    //         try {
-    //             await updateContent(content); // Função para atualizar o conteúdo
-    //             alert("Content updated successfully");
-    //         } catch (error) {
-    //             console.error("Failed to update content:", error);
-    //         }
-    //     }
-    // }
+    async function handleUpdate() {
+        if (content) {
+            try {
+                setIsUpdating(true);
+                const updatedContent = {
+                    name: content.content.name,
+                    text: content.content.text,
+                    id: content.content.id
+                };
+
+                const updatedDynamicFields = content.dynamicFields.map(field => ({
+                    ...field,
+                    id: field.id,
+                    value: field.fieldType === 'checkbox' ? (field.value === 'true') : field.value,
+                }));
+
+                await updateContent(content.content.id, updatedContent, updatedDynamicFields);
+                toast.success("Project updated successfully!");
+                fetchContent(id).catch(console.error);
+            } catch (error) {
+                console.error("Failed to update content:", error);
+                toast.error("Failed to update project.");
+            } finally {
+                setIsUpdating(false);
+            }
+        }
+    }
 
     useEffect(() => {
         if (id) {
@@ -64,7 +85,7 @@ export default function FullPageContentView() {
                     ...prevContent,
                     dynamicFields: prevContent.dynamicFields.map(field =>
                         field.id === fieldId
-                            ? { ...field, value: typeof newValue === 'boolean' ? (newValue ? 'yes' : 'no') : newValue }
+                            ? { ...field, value: typeof newValue === 'boolean' ? (newValue ? 'true' : 'false') : newValue }
                             : field
                     )
                 };
@@ -85,7 +106,6 @@ export default function FullPageContentView() {
             setContent(updatedContent);
         }
     }
-
 
     return (
         <div className="flex flex-col items-center p-6 space-y-4">
@@ -124,14 +144,14 @@ export default function FullPageContentView() {
                                                 <textarea
                                                     id="text"
                                                     value={field.value}
-                                                    onChange={(e) => handleContentChange('text', e.target.value)}
+                                                    onChange={(e) => handleFieldChange(field.id, e.target.value)}
                                                     className="border-2 border-gray-300 rounded-md p-2 text-black"
                                                     placeholder={field.key}
                                                 />
                                             ) : (
                                                 <input
                                                     type="checkbox"
-                                                    checked={field.value === 'yes'}
+                                                    checked={field.value === 'true'}
                                                     onChange={(e) => handleFieldChange(field.id, e.target.checked)}
                                                     className="form-checkbox h-5 w-5 text-blue-600"
                                                 />
@@ -142,16 +162,22 @@ export default function FullPageContentView() {
                             </>
                         )}
                     </div>
-                    {/* <button
-                        onClick={handleUpdate}
-                        className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                    >
-                        Update Content
-                    </button> */}
+                    <div className="flex gap-4 mt-6 justify-center">
+                        <Button
+                            onClick={handleUpdate}
+                            type="button"
+                            className="w-60 border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
+                        >
+                            {isUpdating ? "Updating..." : "Update"}
+                        </Button>
+                        <Button
+                            className="w-60 border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
+                        >
+                            Close
+                        </Button>
+                    </div>
                 </div>
             )}
         </div>
     );
-
-
 }

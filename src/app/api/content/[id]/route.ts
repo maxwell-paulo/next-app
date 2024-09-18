@@ -21,7 +21,6 @@ interface RequestPayload {
     dynamicFields?: DynamicField[];
 }
 
-
 export async function GET(request: NextRequest) {
     try {
         const { pathname } = new URL(request.url);

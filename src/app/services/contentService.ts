@@ -17,6 +17,10 @@ interface DeleteContentResponse {
     message: string;
 }
 
+interface PostContent {
+    message: string;
+}
+
 export async function getContent(id: number): Promise<{ content: Content; dynamicFields: DynamicField[] }> {
     try {
         const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/content/${id}`, {
@@ -74,4 +78,20 @@ export async function deleteContent(id: number) {
     }
 
     return await res.json() as DeleteContentResponse;
+}
+
+export async function createContent(name: string, text: string, projectId: number): Promise<PostContent> {
+    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/content`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, text, projectId }),
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to create project');
+    }
+
+    return await res.json() as PostContent;
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import { createProject } from "../services/projectService";
+import { createContent } from "../services/contentService";
 
 export function CreateContentForm({ projects, onSuccess, onError, onCancel }: {
     projects: { id: number; name: string }[];
@@ -10,7 +10,7 @@ export function CreateContentForm({ projects, onSuccess, onError, onCancel }: {
 }) {
     const [name, setName] = useState('');
     const [text, setText] = useState('');
-    const [projectId, setProjectId] = useState<number | ''>('');
+    const [projectId, setProjectId] = useState<number | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     async function handleSubmit(e: React.FormEvent) {
@@ -18,11 +18,14 @@ export function CreateContentForm({ projects, onSuccess, onError, onCancel }: {
         setIsSubmitting(true);
 
         try {
-            await createProject(name, text, projectId); // Modifique a chamada para passar os três dados
+            if (projectId === null) {
+                throw new Error("Project ID cannot be null");
+            }
+            await createContent(name, text, projectId);
             onSuccess();
             setName('');
             setText('');
-            setProjectId('');
+            setProjectId(null);
         } catch (err) {
             onError();
         } finally {
@@ -72,7 +75,7 @@ export function CreateContentForm({ projects, onSuccess, onError, onCancel }: {
                 </label>
                 <select
                     id="project"
-                    value={projectId}
+                    value={projectId ?? ""}
                     onChange={(e) => setProjectId(Number(e.target.value))}
                     required
                     className="mt-1 block w-full border-2 border-gray-400 rounded-lg px-4 py-2 text-black focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

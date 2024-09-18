@@ -8,8 +8,6 @@ import { toast } from "sonner";
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { CreateDynamicFieldModal } from "./createDynamicFieldModal";
 import { type FullContent } from "../common/types/contentTypes";
-import { listProjects } from "../services/projectsService";
-import { listContents } from "../services/contentsService";
 import { ContentForm } from "./contentForm";
 import { DynamicFieldsForm } from "./dynamicFieldsForm";
 
@@ -34,22 +32,6 @@ export default function FullPageContentView({ isModal }: { isModal: boolean }) {
             setContent(contentData);
         } catch (error) {
             console.error("Failed to fetch content:", error);
-        }
-    }
-
-    async function fetchProjects() {
-        try {
-            await listProjects();
-        } catch (error) {
-            console.error("Failed to fetch projects:", error);
-        }
-    };
-
-    async function fetchContents() {
-        try {
-            await listContents();
-        } catch (error) {
-            console.error("Failed to fetch contents:", error);
         }
     }
 
@@ -89,8 +71,6 @@ export default function FullPageContentView({ isModal }: { isModal: boolean }) {
             await deleteContent(id);
             toast.success("Content deleted successfully!");
             if (isModal) {
-                fetchContents()
-                fetchProjects()
                 router.back();
             } else {
                 router.push("/")

@@ -48,7 +48,7 @@ export default function FullPageContentView() {
                 const updatedDynamicFields = content.dynamicFields.map(field => ({
                     ...field,
                     id: field.id,
-                    value: field.fieldType,
+                    value: field.value,
                 }));
 
                 await updateContent(content.content.id, updatedContent, updatedDynamicFields);
@@ -184,7 +184,7 @@ export default function FullPageContentView() {
                                                 <input
                                                     type="checkbox"
                                                     checked={field.value === 'true'}
-                                                    onChange={(e) => handleFieldChange(field.id, e.target.checked)}
+                                                    onChange={(e) => { handleFieldChange(field.id, e.target.checked) }}
                                                     className="form-checkbox h-5 w-5 text-blue-600"
                                                 />
                                             )}

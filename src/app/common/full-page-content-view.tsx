@@ -179,12 +179,12 @@ export default function FullPageContentView() {
                         />
                     </div>
                     <div>
-                        {content.dynamicFields.length > 0 && (
+                        <div className="flex items-center gap-5 mb-4">
+                            <h2 className="text-xl font-bold">Extra Infos</h2>
+                            <PlusCircleIcon className="text-white w-8 cursor-pointer" onClick={openNewDynamicFieldModal} />
+                        </div>
+                        {content.dynamicFields.length > 0 ? (
                             <>
-                                <div className="flex items-center gap-5 mb-4">
-                                    <h2 className="text-xl font-bold">Extra Infos</h2>
-                                    <PlusCircleIcon className="text-white w-8 cursor-pointer" onClick={openNewDynamicFieldModal} />
-                                </div>
                                 <ul className="space-y-4">
                                     {content.dynamicFields.map(field => (
                                         <li key={field.id} className="flex items-center space-x-4">
@@ -210,6 +210,8 @@ export default function FullPageContentView() {
                                     ))}
                                 </ul>
                             </>
+                        ) : (
+                            <strong className="w-32">No additional information added</strong>
                         )}
                     </div>
                     <div className="flex gap-4 mt-6 justify-center">

@@ -39,7 +39,7 @@ export function CreateContentModal({ isOpen, closeModal }: CloseModalProps) {
                 <h2 className="text-xl font-bold mb-4 text-gray-800 text-center">Add New Content</h2>
 
                 {loading ? (
-                    <div className="text-center">Loading...</div>
+                    <div className="text-center text-black">Loading...</div>
                 ) : (
                     <CreateContentForm
                         projects={projects}

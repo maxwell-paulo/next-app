@@ -2,7 +2,15 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { createProject } from "../services/projectService";
 
-export function CreateProjectForm({ onSuccess, onError, onCancel }: { onSuccess: () => void; onError: () => void; onCancel: () => void; }) {
+export function CreateProjectForm({
+    onSuccess,
+    onError,
+    onCancel,
+}: {
+    onSuccess: () => void;
+    onError: (errorMessage: string) => void;
+    onCancel: () => void;
+}) {
     const [projectName, setProjectName] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -14,14 +22,15 @@ export function CreateProjectForm({ onSuccess, onError, onCancel }: { onSuccess:
             await createProject(projectName);
             onSuccess();
             setProjectName('');
-        } catch (err) {
+        } catch (err: any) {
             console.log(err);
-
-            onError();
+            const errorMessage = err?.message || 'Something went wrong';
+            onError(errorMessage);
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }
+
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

@@ -19,8 +19,8 @@ export function CreateProjectModal({ isOpen, closeModal }: CloseModalProps) {
                         toast.success("Project created successfully!");
                         router.refresh();
                     }}
-                    onError={() => {
-                        toast.error("Failed to create project.");
+                    onError={(errorMessage) => {
+                        toast.error(`Failed to create project: ${errorMessage}`);
                     }}
                     onCancel={closeModal}
                 />

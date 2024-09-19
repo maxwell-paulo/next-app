@@ -12,6 +12,12 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Project name is required' }, { status: 400 });
         }
 
+        const projectAllreadyExist = await db.query.projects.findFirst({ where: (fields, { eq }) => eq(fields.name, name) })
+
+        if (projectAllreadyExist) {
+            return NextResponse.json({ error: 'Project name allready exist' }, { status: 409 });
+        }
+
         await db.insert(projects).values({ name });
 
         return NextResponse.json({ message: "Project created successfully!" }, { status: 201 });

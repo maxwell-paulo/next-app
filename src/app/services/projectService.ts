@@ -13,11 +13,15 @@ export async function createProject(name: string): Promise<Message> {
     });
 
     if (!res.ok) {
-        throw new Error('Failed to create project');
+        console.log(res)
+        const errorData = await res.json();
+        const errorMessage = errorData.status === 409 ? "Project name allready exist" : 'Failed to create project';
+        throw new Error(errorMessage);
     }
 
     return await res.json() as Message;
 }
+
 
 export async function deleteProject(id: number) {
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/project?id=${id}`, {

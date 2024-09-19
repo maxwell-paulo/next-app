@@ -13,9 +13,7 @@ export async function createProject(name: string): Promise<Message> {
     });
 
     if (!res.ok) {
-        const errorData = await res.json();
-        const errorMessage = errorData.status === 409 ? "Project name allready exist" : 'Failed to create project';
-        throw new Error(errorMessage);
+        throw new Error('Failed to create project');
     }
 
     return await res.json() as Message;

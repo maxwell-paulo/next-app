@@ -1,7 +1,7 @@
 import { CreateProjectForm } from "./createProjectForm";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { type CloseModalProps } from "../common/types/commonTypes";
+import { type CloseModalProps } from "../../common/types/commonTypes";
 
 export function CreateProjectModal({ isOpen, closeModal }: CloseModalProps) {
     const router = useRouter();

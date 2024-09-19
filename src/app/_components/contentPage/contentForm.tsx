@@ -1,4 +1,4 @@
-import { type FullContent } from "../common/types/contentTypes";
+import { type FullContent } from "../../common/types/contentTypes";
 
 export function ContentForm({ content, setContent }: { content: FullContent; setContent: React.Dispatch<React.SetStateAction<FullContent | null>> }) {
     function handleContentChange(key: "name" | "text", newValue: string) {

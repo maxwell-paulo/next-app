@@ -1,4 +1,4 @@
-import FullPageContentView from "~/app/_components/fullPageContentView"
+import FullPageContentView from "~/app/_components/contentPage/fullPageContentView"
 
 
 export default function ContentPage() {

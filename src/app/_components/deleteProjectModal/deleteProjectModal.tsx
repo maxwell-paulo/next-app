@@ -1,10 +1,10 @@
 import { Button } from "~/components/ui/button";
 import { useEffect, useState } from "react";
-import { listProjects } from "../services/projectsService";
-import { deleteProject } from "../services/projectService";
+import { listProjects } from "../../services/projectsService";
+import { deleteProject } from "../../services/projectService";
 import { toast } from "sonner";
-import { type GetProjects } from "../common/types/projectTypes";
-import { type CloseModalProps } from "../common/types/commonTypes";
+import { type GetProjects } from "../../common/types/projectTypes";
+import { type CloseModalProps } from "../../common/types/commonTypes";
 
 export function DeleteProjectModal({ isOpen, closeModal }: CloseModalProps) {
     const [projects, setProjects] = useState<GetProjects[]>([]);

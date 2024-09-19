@@ -1,8 +1,8 @@
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { type FullContent } from "../common/types/contentTypes";
-import { deleteDynamicField } from "../services/dynamicFields";
+import { type FullContent } from "../../common/types/contentTypes";
+import { deleteDynamicField } from "../../services/dynamicFields";
 import { toast } from "sonner";
-import { getContent } from "../services/contentService";
+import { getContent } from "../../services/contentService";
 
 export function DynamicFieldsForm({
     content,

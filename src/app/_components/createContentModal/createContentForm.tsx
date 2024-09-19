@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
-import { createContent } from "../services/contentService";
+import { createContent } from "../../services/contentService";
 
 export function CreateContentForm({ projects, onSuccess, onError, onCancel }: {
     projects: { id: number; name: string }[];

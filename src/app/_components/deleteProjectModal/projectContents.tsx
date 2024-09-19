@@ -1,16 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { listProjects } from "../services/projectsService";
+import { listProjects } from "../../services/projectsService";
 import { useState, useEffect } from "react";
-import { listContents } from "../services/contentsService";
+import { listContents } from "../../services/contentsService";
 import { EyeIcon } from '@heroicons/react/24/solid';
 import { Button } from "~/components/ui/button";
-import { CreateProjectModal } from "./createProjectModal";
+import { CreateProjectModal } from "../createProjectModal/createProjectModal";
 import { DeleteProjectModal } from "./deleteProjectModal";
-import { CreateContentModal } from "./createContentModal";
-import { type GetProjects } from "../common/types/projectTypes";
-import { type Content } from "../common/types/contentTypes";
+import { CreateContentModal } from "../createContentModal/createContentModal";
+import { type GetProjects } from "../../common/types/projectTypes";
+import { type Content } from "../../common/types/contentTypes";
 
 export const dynamic = "force-dynamic";
 

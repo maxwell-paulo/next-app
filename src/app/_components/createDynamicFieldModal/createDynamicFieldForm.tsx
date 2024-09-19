@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "~/components/ui/button";
-import { createDynamicField } from "../services/dynamicFields";
-import { type CreateDynamicFieldFormProps } from "../common/types/dynamicFieldsTypes";
+import { createDynamicField } from "../../services/dynamicFields";
+import { type CreateDynamicFieldFormProps } from "../../common/types/dynamicFieldsTypes";
 
 export function CreateDynamicFieldForm({
     onSuccess,

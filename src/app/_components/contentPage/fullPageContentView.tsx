@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { deleteContent, getContent, updateContent } from "../services/contentService";
+import { deleteContent, getContent, updateContent } from "../../services/contentService";
 import { Button } from "~/components/ui/button";
 import { toast } from "sonner";
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
-import { CreateDynamicFieldModal } from "./createDynamicFieldModal";
-import { type FullContent } from "../common/types/contentTypes";
+import { CreateDynamicFieldModal } from "../createDynamicFieldModal/createDynamicFieldModal";
+import { type FullContent } from "../../common/types/contentTypes";
 import { ContentForm } from "./contentForm";
 import { DynamicFieldsForm } from "./dynamicFieldsForm";
 

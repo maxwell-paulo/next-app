@@ -2,7 +2,7 @@ import "~/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { Topnav } from "./_components/topnav";
+import { Topnav } from "./_components/topNav/topnav";
 import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {

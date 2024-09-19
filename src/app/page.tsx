@@ -1,4 +1,4 @@
-import { ProjectContents } from "./_components/projectContents";
+import { ProjectContents } from "./_components/deleteProjectModal/projectContents";
 
 export const dynamic = "force-dynamic"
 

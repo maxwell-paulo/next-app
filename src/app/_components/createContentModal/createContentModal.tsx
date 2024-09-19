@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { CreateContentForm } from "./createContentForm";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { listProjects } from "../services/projectsService";
-import { type GetProjects } from "../common/types/projectTypes";
-import { type CloseModalProps } from "../common/types/commonTypes";
+import { listProjects } from "../../services/projectsService";
+import { type GetProjects } from "../../common/types/projectTypes";
+import { type CloseModalProps } from "../../common/types/commonTypes";
 
 export function CreateContentModal({ isOpen, closeModal }: CloseModalProps) {
     const [projects, setProjects] = useState<{ id: number; name: string }[]>([]);

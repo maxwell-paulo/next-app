@@ -29,7 +29,6 @@ export async function deleteDynamicField(id: number): Promise<Id> {
     });
 
     if (!res.ok) {
-        console.log(res);
         throw new Error('Failed to delete content');
     }
 

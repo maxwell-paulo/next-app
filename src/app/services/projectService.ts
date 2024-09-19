@@ -13,7 +13,6 @@ export async function createProject(name: string): Promise<Message> {
     });
 
     if (!res.ok) {
-        console.log(res)
         const errorData = await res.json();
         const errorMessage = errorData.status === 409 ? "Project name allready exist" : 'Failed to create project';
         throw new Error(errorMessage);
@@ -32,8 +31,6 @@ export async function deleteProject(id: number) {
     });
 
     if (!res.ok) {
-        console.log(res);
-
         throw new Error('Failed to delete project');
     }
 
